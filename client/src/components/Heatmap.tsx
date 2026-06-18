@@ -75,11 +75,11 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'flex-start' }}>
+    <div className="heatmap-grid">
       {scansByYearMonthAndDay.map((yearGroup) => {
         return yearGroup.months.map((monthGroup) => {
           return (
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '2px' }} key={`${yearGroup.year}-${monthGroup.month}`}>
+            <div className="heatmap-month-row" key={`${yearGroup.year}-${monthGroup.month}`}>
               {monthGroup.days.map((day) => {
                 return (
                   <HeatmapBox

@@ -55,10 +55,95 @@ body {
   border-radius: 6px;
 }
 
+.cloud-provider-label {
+  color: white !important;
+}
+
+.cloud-provider-select {
+  color: white !important;
+}
+
+.year-picker-icon {
+  color: white;
+}
+
 .heatmap-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 800px;
+}
+
+.heatmap-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+}
+
+.heatmap-month-row {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.heatmap-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  margin: 2px;
+  cursor: pointer;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.heatmap-box-dimmed {
+  opacity: 0.15;
+}
+
+.heatmap-box-highlighted {
+  transform: scale(1.06);
+}
+
+.heatmap-tooltip-content {
+  font-size: 15px;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.legend-label {
+  font-weight: bold;
+}
+
+.legend-label-less {
+  margin-right: 10px;
+}
+
+.legend-label-more {
+  margin-left: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.error-screen {
+  padding: 20px;
+  text-align: center;
+}
+
+.loader {
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }

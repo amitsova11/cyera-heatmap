@@ -8,7 +8,7 @@ interface ErrorScreenProps {
 
 export const ErrorScreen: React.FC<ErrorScreenProps> = ({ message, onRetry }) => {
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
+    <div className="error-screen">
       <h2>Error</h2>
       <p>{message}</p>
       <p>We couldn't load the data. Please try again later.</p>

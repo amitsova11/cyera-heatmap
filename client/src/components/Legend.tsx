@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeatmapBox } from './HeatmapBox';
+import { HeatmapLegendBox } from './HeatmapLegendBox';
 
 const legendItems = [
     { numScans: 0, maxScans: 100, label: '0 scans' },
@@ -17,23 +17,21 @@ interface LegendProps {
 export const Legend: React.FC<LegendProps> = ({ activeLevel, onLevelHover }) => {
     return (
         <div
-            style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', alignItems: 'center' }}
+            className="legend"
             onMouseLeave={() => onLevelHover(null)}
         >
-            <span style={{ marginRight: '10px', fontWeight: 'bold' }}>Less</span>
+            <span className="legend-label legend-label-less">Less</span>
             {legendItems.map((item, index) => (
-                <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    <HeatmapBox
-                        date="Legend"
+                <div key={index} className="legend-item">
+                    <HeatmapLegendBox
                         numScans={item.numScans}
                         maxScans={item.maxScans}
-                        showTooltip={false}
                         activeLevel={activeLevel}
                         onHoverLevel={onLevelHover}
                     />
                 </div>
             ))}
-            <span style={{ fontWeight: 'bold', marginLeft: '10px' }}>More</span>
+            <span className="legend-label legend-label-more">More</span>
         </div>
     );
 };

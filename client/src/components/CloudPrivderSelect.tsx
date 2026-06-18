@@ -41,11 +41,11 @@ export const CloudPrivderSelect = ({
   return (
     <div className={'select'}>
       <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-name-label">
-          <div style={{ color: 'white' }}> Cloud Providers </div>
+        <InputLabel id="demo-multiple-name-label" className="cloud-provider-label">
+          Cloud Providers
         </InputLabel>
         <Select
-          style={{ color: 'white' }}
+          className="cloud-provider-select"
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
