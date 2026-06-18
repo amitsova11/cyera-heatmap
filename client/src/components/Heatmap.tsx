@@ -8,6 +8,10 @@ interface HeatmapProps {
 
 export const Heatmap = ({ scans }: HeatmapProps) => {
   const scansByYearMonthAndDay = useMemo(() => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayKey = yesterday.toISOString().slice(0, 10);
+
     const groupedScans = new Map<number, Map<string, Map<string, number>>>();
 
     scans.forEach((scan) => {
@@ -45,7 +49,7 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
           const days = Array.from({ length: daysInMonth }, (_, d) => {
             const dayKey = String(d + 1).padStart(2, '0');
             return { day: dayKey, count: dayMap.get(dayKey) ?? 0 };
-          });
+          }).filter(({ day }) => `${monthKey}-${day}` <= yesterdayKey);
           return { month: monthKey, days };
         }),
       }));
