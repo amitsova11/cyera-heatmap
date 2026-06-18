@@ -18,6 +18,7 @@ export default function App() {
   const [error, setError] = useState<ApiError>();
   const [isLoadingCloudProviders, setIsLoadingCloudProviders] = useState(false);
   const [isLoadingScans, setIsLoadingScans] = useState(false);
+  const [isLightMode, setIsLightMode] = useState(false);
 
   const isLoading = isLoadingCloudProviders || isLoadingScans;
 
@@ -65,6 +66,14 @@ export default function App() {
     fetchScans();
   }, [year, selectedProviders]);
 
+  useEffect(() => {
+    document.body.classList.toggle('light-mode', isLightMode);
+
+    return () => {
+      document.body.classList.remove('light-mode');
+    };
+  }, [isLightMode]);
+
   const handleRetry = () => {
     setError(undefined);
     fetchCloudProviders();
@@ -72,7 +81,7 @@ export default function App() {
   };
 
   return (
-    <div className="app">
+    <div className={`app${isLightMode ? ' light-mode' : ''}`}>
       <div className="filters">
         <YearPicker
           value={year}
@@ -87,6 +96,20 @@ export default function App() {
           onChange={setSelectedProviders}
           selectedOptions={selectedProviders}
         />
+        <button
+          type="button"
+          className="theme-toggle-image-button"
+          onClick={() => setIsLightMode((current) => !current)}
+          aria-label={isLightMode ? 'Switch to dark mode' : 'Switch to light mode'}
+        >
+          <img
+            className="theme-toggle-image"
+            src={isLightMode ? '/dark-mode.png' : '/light-mode.jpg'}
+            alt={isLightMode ? 'Dark mode icon' : 'Light mode icon'}
+            height={24}
+            width={24}
+          />
+        </button>
       </div>
       <div className="heatmap-container">
         {error ? (

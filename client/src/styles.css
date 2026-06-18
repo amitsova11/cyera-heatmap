@@ -3,6 +3,12 @@ body {
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+body.light-mode {
+  background: white;
+  color: #151a22;
 }
 
 .app {
@@ -11,6 +17,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.app.light-mode {
+  color: #151a22;
 }
 
 .color1 {
@@ -35,9 +45,9 @@ body {
 
 .filters {
   display: flex;
-  justify-content: center;
-  width: 450px;
+  justify-content: flex-start;
   gap: 14px;
+  align-items: center;
 }
 
 .year-picker {
@@ -65,6 +75,55 @@ body {
 
 .year-picker-icon {
   color: white;
+}
+
+.theme-toggle-image-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.theme-toggle-image-button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.theme-toggle-image {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.app.light-mode .year-picker {
+  background-color: #eef3fb;
+}
+
+.app.light-mode .select {
+  background-color: #eef3fb;
+}
+
+.app.light-mode .cloud-provider-label {
+  color: #1f2b45 !important;
+}
+
+.app.light-mode .cloud-provider-select {
+  color: #1f2b45 !important;
+}
+
+.app.light-mode .year-picker-icon {
+  color: #1f2b45;
+}
+
+.app.light-mode .theme-toggle-image-button:focus-visible {
+  outline: 2px solid #1f5ec6;
 }
 
 .heatmap-container {
@@ -146,4 +205,24 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
+}
+
+.app.light-mode .color1 {
+  background: #e3eaf9;
+}
+
+.app.light-mode .color2 {
+  background: #c7d9fb;
+}
+
+.app.light-mode .color3 {
+  background: #99bbf6;
+}
+
+.app.light-mode .color4 {
+  background: #5e90ea;
+}
+
+.app.light-mode .color5 {
+  background: #2d66d4;
 }
