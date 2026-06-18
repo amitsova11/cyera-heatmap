@@ -4,6 +4,7 @@ import { Heatmap } from './components/Heatmap';
 import { Loader } from './components/Loader';
 import { YearPicker } from './components/YearPicker';
 import { CloudPrivderSelect } from './components/CloudPrivderSelect';
+import { ThemeToggle } from './components/ThemeToggle';
 import { api } from './services/api';
 import { CloudProviderDto } from '../../common/dtos/cloud-provider.dto';
 import { ScanDto } from '../../common/dtos/scan.dto';
@@ -96,20 +97,10 @@ export default function App() {
           onChange={setSelectedProviders}
           selectedOptions={selectedProviders}
         />
-        <button
-          type="button"
-          className="theme-toggle-image-button"
-          onClick={() => setIsLightMode((current) => !current)}
-          aria-label={isLightMode ? 'Switch to dark mode' : 'Switch to light mode'}
-        >
-          <img
-            className="theme-toggle-image"
-            src={isLightMode ? '/dark-mode.png' : '/light-mode.jpg'}
-            alt={isLightMode ? 'Dark mode icon' : 'Light mode icon'}
-            height={24}
-            width={24}
-          />
-        </button>
+        <ThemeToggle
+          isLightMode={isLightMode}
+          onToggle={() => setIsLightMode((current) => !current)}
+        />
       </div>
       <div className="heatmap-container">
         {error ? (
