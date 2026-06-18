@@ -3,11 +3,11 @@ import './styles.css';
 import { Heatmap } from './components/Heatmap';
 import { YearPicker } from './components/YearPicker';
 import { CloudPrivderSelect } from './components/CloudPrivderSelect';
-import { ErrorMessage } from './components/ErrorMessage';
 import { api } from './services/api';
 import { CloudProviderDto } from '../../common/dtos/cloud-provider.dto';
 import { ScanDto } from '../../common/dtos/scan.dto';
 import { ApiError } from './types/api';
+import { ErrorScreen } from './components/ErrorScreen';
 
 export default function App() {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -50,9 +50,14 @@ export default function App() {
     fetchScans();
   }, [year, selectedProviders]);
 
+  const handleRetry = () => {
+    setError(undefined);
+    fetchCloudProviders();
+    fetchScans();
+  };
+
   return (
     <div className="app">
-      <ErrorMessage error={error} onClose={() => setError(undefined)} />
       <div className="filters">
         <YearPicker
           value={year}
@@ -68,7 +73,11 @@ export default function App() {
           selectedOptions={selectedProviders}
         />
       </div>
-      <Heatmap scans={scans} />
+      {error ? (
+        <ErrorScreen message={error.message} onRetry={handleRetry} />
+      ) : (
+        <Heatmap scans={scans} />
+      )}
     </div>
   );
 }
