@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './styles.css';
 import { Heatmap } from './components/Heatmap';
+import { Loader } from './components/Loader';
 import { YearPicker } from './components/YearPicker';
 import { CloudPrivderSelect } from './components/CloudPrivderSelect';
 import { api } from './services/api';
@@ -15,30 +16,44 @@ export default function App() {
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [scans, setScans] = useState<ScanDto[]>([]);
   const [error, setError] = useState<ApiError>();
+  const [isLoadingCloudProviders, setIsLoadingCloudProviders] = useState(false);
+  const [isLoadingScans, setIsLoadingScans] = useState(false);
+
+  const isLoading = isLoadingCloudProviders || isLoadingScans;
 
   const fetchCloudProviders = async () => {
-    const response = await api.getCloudProviders();
-    if (response.error) {
-      setError(response.error);
-    } else if (response.data) {
-      setCloudProviders(response.data);
+    setIsLoadingCloudProviders(true);
+    try {
+      const response = await api.getCloudProviders();
+      if (response.error) {
+        setError(response.error);
+      } else if (response.data) {
+        setCloudProviders(response.data);
+      }
+    } finally {
+      setIsLoadingCloudProviders(false);
     }
   };
 
   const fetchScans = async () => {
-    const startDate = new Date(year, 0, 1).toISOString();
-    const endDate = new Date(year + 1, 0, 1).toISOString();
-    
-    const response = await api.getScans({
-      startDate,
-      endDate,
-      cloudProvidersIds: selectedProviders.length ? selectedProviders : undefined
-    });
+    setIsLoadingScans(true);
+    try {
+      const startDate = new Date(year, 0, 1).toISOString();
+      const endDate = new Date(year + 1, 0, 1).toISOString();
 
-    if (response.error) {
-      setError(response.error);
-    } else if (response.data) {
-      setScans(response.data);
+      const response = await api.getScans({
+        startDate,
+        endDate,
+        cloudProvidersIds: selectedProviders.length ? selectedProviders : undefined
+      });
+
+      if (response.error) {
+        setError(response.error);
+      } else if (response.data) {
+        setScans(response.data);
+      }
+    } finally {
+      setIsLoadingScans(false);
     }
   };
 
@@ -73,11 +88,15 @@ export default function App() {
           selectedOptions={selectedProviders}
         />
       </div>
-      {error ? (
-        <ErrorScreen message={error.message} onRetry={handleRetry} />
-      ) : (
-        <Heatmap scans={scans} />
-      )}
+      <div className="heatmap-container">
+        {error ? (
+          <ErrorScreen message={error.message} onRetry={handleRetry} />
+        ) : isLoading ? (
+          <Loader />
+        ) : (
+          <Heatmap scans={scans} />
+        )}
+      </div>
     </div>
   );
 }
