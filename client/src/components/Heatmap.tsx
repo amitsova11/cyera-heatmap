@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { ScanDto } from '../../../common/dtos/scan.dto';
 import { HeatmapBox } from './HeatmapBox';
+import { Legend } from './Legend';
 
 interface HeatmapProps {
   scans: ScanDto[];
@@ -72,7 +73,7 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'flex-start' }}>
       {scansByYearMonthAndDay.map((yearGroup) => {
         return yearGroup.months.map((monthGroup) => {
           return (
@@ -91,6 +92,7 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
           );
         });
       })}
+      <Legend />
     </div>
   );
 };

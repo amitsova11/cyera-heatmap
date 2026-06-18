@@ -5,9 +5,10 @@ interface HeatmapBoxProps {
   date: string;
   numScans: number;
   maxScans: number;
+  showTooltip?: boolean;
 }
 
-export const HeatmapBox: React.FC<HeatmapBoxProps> = ({ date, numScans, maxScans }: HeatmapBoxProps) => {
+export const HeatmapBox: React.FC<HeatmapBoxProps> = ({ date, numScans, maxScans, showTooltip = true }: HeatmapBoxProps) => {
   const getColorClass = (count: number) => {
     if (count === 0 || maxScans === 0) return 'color1';
     const pct = count / maxScans;
@@ -17,18 +18,26 @@ export const HeatmapBox: React.FC<HeatmapBoxProps> = ({ date, numScans, maxScans
     return 'color5';
   };
 
+  const box = (
+    <div
+      className={getColorClass(numScans)}
+      style={{
+        width: '20px',
+        height: '20px',
+        borderRadius: '4px',
+        margin: '2px',
+        cursor: 'pointer',
+      }}
+    />
+  );
+
+  if (!showTooltip) {
+    return box;
+  }
+
   return (
     <Tooltip title={<div style={{fontSize: '15px'}}>{`${date}: ${numScans} scan${numScans !== 1 ? 's' : ''}`}</div>} arrow>
-      <div
-        className={getColorClass(numScans)}
-        style={{
-          width: '20px',
-          height: '20px',
-          borderRadius: '4px',
-          margin: '2px',
-          cursor: 'pointer',
-        }}
-      />
+      {box}
     </Tooltip>
   );
 }
