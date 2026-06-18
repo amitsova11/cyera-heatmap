@@ -6,9 +6,18 @@ interface HeatmapBoxProps {
   numScans: number;
   maxScans: number;
   showTooltip?: boolean;
+  activeLevel?: string | null;
+  onHoverLevel?: (level: string | null) => void;
 }
 
-export const HeatmapBox: React.FC<HeatmapBoxProps> = ({ date, numScans, maxScans, showTooltip = true }: HeatmapBoxProps) => {
+export const HeatmapBox: React.FC<HeatmapBoxProps> = ({
+  date,
+  numScans,
+  maxScans,
+  showTooltip = true,
+  activeLevel,
+  onHoverLevel,
+}: HeatmapBoxProps) => {
   const getColorClass = (count: number) => {
     if (count === 0 || maxScans === 0) return 'color1';
     const pct = count / maxScans;
@@ -18,16 +27,26 @@ export const HeatmapBox: React.FC<HeatmapBoxProps> = ({ date, numScans, maxScans
     return 'color5';
   };
 
+  const level = getColorClass(numScans);
+  const isActiveFilter = activeLevel != null;
+  const isMatch = activeLevel === level;
+  const isDimmed = isActiveFilter && !isMatch;
+
   const box = (
     <div
-      className={getColorClass(numScans)}
+      className={level}
       style={{
         width: '20px',
         height: '20px',
         borderRadius: '4px',
         margin: '2px',
-        cursor: 'pointer',
+        cursor: onHoverLevel ? 'pointer' : 'default',
+        opacity: isDimmed ? 0.15 : 1,
+        transform: isMatch ? 'scale(1.06)' : 'scale(1)',
+        transition: 'opacity 120ms ease, transform 120ms ease',
       }}
+      onMouseEnter={() => onHoverLevel?.(level)}
+      onMouseLeave={() => onHoverLevel?.(null)}
     />
   );
 

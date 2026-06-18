@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { ScanDto } from '../../../common/dtos/scan.dto';
 import { HeatmapBox } from './HeatmapBox';
 import { Legend } from './Legend';
@@ -8,6 +8,8 @@ interface HeatmapProps {
 }
 
 export const Heatmap = ({ scans }: HeatmapProps) => {
+  const [hoveredLevel, setHoveredLevel] = useState<string | null>(null);
+
   const scansByYearMonthAndDay = useMemo(() => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
@@ -85,6 +87,7 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
                     date={`${monthGroup.month}-${day.day}`}
                     numScans={day.count}
                     maxScans={yearGroup.maxCount}
+                    activeLevel={hoveredLevel}
                   />
                 );
               })}
@@ -92,7 +95,7 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
           );
         });
       })}
-      <Legend />
+      <Legend activeLevel={hoveredLevel} onLevelHover={setHoveredLevel} />
     </div>
   );
 };

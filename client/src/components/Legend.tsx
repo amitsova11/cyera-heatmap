@@ -9,9 +9,17 @@ const legendItems = [
     { numScans: 100, maxScans: 100, label: '76-100% of max scans' },
 ];
 
-export const Legend: React.FC = () => {
+interface LegendProps {
+    activeLevel: string | null;
+    onLevelHover: (level: string | null) => void;
+}
+
+export const Legend: React.FC<LegendProps> = ({ activeLevel, onLevelHover }) => {
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', alignItems: 'center' }}>
+        <div
+            style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', alignItems: 'center' }}
+            onMouseLeave={() => onLevelHover(null)}
+        >
             <span style={{ marginRight: '10px', fontWeight: 'bold' }}>Less</span>
             {legendItems.map((item, index) => (
                 <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -20,6 +28,8 @@ export const Legend: React.FC = () => {
                         numScans={item.numScans}
                         maxScans={item.maxScans}
                         showTooltip={false}
+                        activeLevel={activeLevel}
+                        onHoverLevel={onLevelHover}
                     />
                 </div>
             ))}
