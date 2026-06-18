@@ -1,17 +1,18 @@
 import React from 'react';
 import { HeatmapLegendBox } from './HeatmapLegendBox';
+import { HeatmapLevel } from '../utils';
 
 const legendItems = [
-    { numScans: 0, maxScans: 100, label: '0 scans' },
-    { numScans: 25, maxScans: 100, label: '1-25% of max scans' },
-    { numScans: 50, maxScans: 100, label: '26-50% of max scans' },
-    { numScans: 75, maxScans: 100, label: '51-75% of max scans' },
-    { numScans: 100, maxScans: 100, label: '76-100% of max scans' },
+    { numScans: 0, maxScans: 100 },
+    { numScans: 25, maxScans: 100 },
+    { numScans: 50, maxScans: 100 },
+    { numScans: 75, maxScans: 100 },
+    { numScans: 100, maxScans: 100},
 ];
 
 interface LegendProps {
-    activeLevel: string | null;
-    onLevelHover: (level: string | null) => void;
+    activeLevel: HeatmapLevel | null;
+    onLevelHover: (level: HeatmapLevel | null) => void;
 }
 
 export const Legend: React.FC<LegendProps> = ({ activeLevel, onLevelHover }) => {

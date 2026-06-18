@@ -2,13 +2,14 @@ import { useMemo, useState } from 'react';
 import { ScanDto } from '../../../common/dtos/scan.dto';
 import { HeatmapBox } from './HeatmapBox';
 import { Legend } from './Legend';
+import { HeatmapLevel } from '../utils';
 
 interface HeatmapProps {
   scans: ScanDto[];
 }
 
 export const Heatmap = ({ scans }: HeatmapProps) => {
-  const [hoveredLevel, setHoveredLevel] = useState<string | null>(null);
+  const [hoveredLevel, setHoveredLevel] = useState<HeatmapLevel | null>(null);
 
   const scansByYearMonthAndDay = useMemo(() => {
     const yesterday = new Date();
