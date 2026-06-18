@@ -18,7 +18,7 @@ export const HeatmapBox: React.FC<HeatmapBoxProps> = ({ date, numScans, maxScans
   };
 
   return (
-    <Tooltip title={`${date}: ${numScans} scan${numScans !== 1 ? 's' : ''}`} arrow>
+    <Tooltip title={<div style={{fontSize: '15px'}}>{`${date}: ${numScans} scan${numScans !== 1 ? 's' : ''}`}</div>} arrow>
       <div
         className={getColorClass(numScans)}
         style={{
