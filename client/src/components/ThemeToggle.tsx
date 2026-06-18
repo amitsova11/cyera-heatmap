@@ -13,7 +13,7 @@ export const ThemeToggle = ({ isLightMode, onToggle }: ThemeToggleProps) => {
     >
       <img
         className="theme-toggle-image"
-        src={isLightMode ? '/dark-mode.png' : '/light-mode.jpg'}
+        src={isLightMode ? '/dark-mode.png' : '/sun-icon-dark.jpg'}
         alt={isLightMode ? 'Dark mode icon' : 'Light mode icon'}
         height={24}
         width={24}

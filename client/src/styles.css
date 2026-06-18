@@ -165,7 +165,7 @@ body.light-mode {
 }
 
 .heatmap-box-dimmed {
-  opacity: 0.15;
+  opacity: 0.01;
 }
 
 .heatmap-box-highlighted {

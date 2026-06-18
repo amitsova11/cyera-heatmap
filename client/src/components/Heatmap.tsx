@@ -12,14 +12,17 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
   const [hoveredLevel, setHoveredLevel] = useState<HeatmapLevel | null>(null);
 
   const scansByYearMonthAndDay = useMemo(() => {
+    // find yesterday
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayKey = yesterday.toISOString().slice(0, 10);
 
+    // create years => months => days => count structure
     const groupedScans = new Map<number, Map<string, Map<string, number>>>();
 
     scans.forEach((scan) => {
       const scanDate = new Date(scan.date);
+
       if (Number.isNaN(scanDate.getTime())) {
         return;
       }
@@ -42,8 +45,11 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
       monthGroup.set(dayKey, (monthGroup.get(dayKey) ?? 0) + 1);
     });
 
+    // sort and fill in missing days
     return Array.from(groupedScans.entries())
+
       .sort(([aYear], [bYear]) => aYear - bYear)
+      
       .map(([year, monthMap]) => {
         let maxDay: string | null = null;
         let maxCount = 0;
@@ -52,6 +58,7 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
           const monthKey = `${year}-${String(i + 1).padStart(2, '0')}`;
           const dayMap = monthMap.get(monthKey) ?? new Map<string, number>();
           const daysInMonth = new Date(year, i + 1, 0).getDate();
+          // if current month, then change daysin month to yesterday's day
           const days = Array.from({ length: daysInMonth }, (_, d) => {
             const dayKey = String(d + 1).padStart(2, '0');
             return { day: dayKey, count: dayMap.get(dayKey) ?? 0 };
