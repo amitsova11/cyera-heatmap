@@ -81,6 +81,7 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
                 return (
                   <HeatmapBox
                     key={`${yearGroup.year}-${monthGroup.month}-${day.day}`}
+                    date={`${monthGroup.month}-${day.day}`}
                     numScans={day.count}
                     maxScans={yearGroup.maxCount}
                   />
