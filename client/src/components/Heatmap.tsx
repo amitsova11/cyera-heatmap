@@ -7,8 +7,8 @@ interface HeatmapProps {
 }
 
 export const Heatmap = ({ scans }: HeatmapProps) => {
-  const scansByYearAndDay = useMemo(() => {
-    const groupedScans = new Map<number, Map<string, number>>();
+  const scansByYearMonthAndDay = useMemo(() => {
+    const groupedScans = new Map<number, Map<string, Map<string, number>>>();
 
     scans.forEach((scan) => {
       const scanDate = new Date(scan.date);
@@ -17,35 +17,60 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
       }
 
       const year = scanDate.getUTCFullYear();
-      const dayKey = scanDate.toISOString().slice(0, 10);
+      const monthKey = scanDate.toISOString().slice(0, 7);
+      const dayKey = scanDate.toISOString().slice(8, 10);
 
       if (!groupedScans.has(year)) {
-        groupedScans.set(year, new Map<string, number>());
+        groupedScans.set(year, new Map<string, Map<string, number>>());
       }
 
       const yearGroup = groupedScans.get(year)!;
-      yearGroup.set(dayKey, (yearGroup.get(dayKey) ?? 0) + 1);
+
+      if (!yearGroup.has(monthKey)) {
+        yearGroup.set(monthKey, new Map<string, number>());
+      }
+
+      const monthGroup = yearGroup.get(monthKey)!;
+      monthGroup.set(dayKey, (monthGroup.get(dayKey) ?? 0) + 1);
     });
 
     return Array.from(groupedScans.entries())
       .sort(([aYear], [bYear]) => aYear - bYear)
-      .map(([year, dayMap]) => ({
+      .map(([year, monthMap]) => ({
         year,
-        days: Array.from(dayMap.entries())
-          .sort(([aDay], [bDay]) => aDay.localeCompare(bDay))
-          .map(([day, count]) => ({ day, count })),
+        months: Array.from({ length: 12 }, (_, i) => {
+          const monthKey = `${year}-${String(i + 1).padStart(2, '0')}`;
+          const dayMap = monthMap.get(monthKey) ?? new Map<string, number>();
+          const daysInMonth = new Date(year, i + 1, 0).getDate();
+          const days = Array.from({ length: daysInMonth }, (_, d) => {
+            const dayKey = String(d + 1).padStart(2, '0');
+            return { day: dayKey, count: dayMap.get(dayKey) ?? 0 };
+          });
+          return { month: monthKey, days };
+        }),
       }));
   }, [scans]);
 
-  if (!scansByYearAndDay.length) {
+  if (!scansByYearMonthAndDay.length) {
     return <div>no scans found</div>;
   }
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px' }}>
-      {scansByYearAndDay.map((yearGroup) =>{
-        return yearGroup.days.map((day) => {   
-          return <HeatmapBox key={day.day} numScans={day.count} />;
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+      {scansByYearMonthAndDay.map((yearGroup) => {
+        return yearGroup.months.map((monthGroup) => {
+          return (
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '2px' }} key={`${yearGroup.year}-${monthGroup.month}`}>
+              {monthGroup.days.map((day) => {
+                return (
+                  <HeatmapBox
+                    key={`${yearGroup.year}-${monthGroup.month}-${day.day}`}
+                    numScans={day.count}
+                  />
+                );
+              })}
+            </div>
+          );
         });
       })}
     </div>
