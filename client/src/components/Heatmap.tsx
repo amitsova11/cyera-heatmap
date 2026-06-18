@@ -40,9 +40,11 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
 
     return Array.from(groupedScans.entries())
       .sort(([aYear], [bYear]) => aYear - bYear)
-      .map(([year, monthMap]) => ({
-        year,
-        months: Array.from({ length: 12 }, (_, i) => {
+      .map(([year, monthMap]) => {
+        let maxDay: string | null = null;
+        let maxCount = 0;
+
+        const months = Array.from({ length: 12 }, (_, i) => {
           const monthKey = `${year}-${String(i + 1).padStart(2, '0')}`;
           const dayMap = monthMap.get(monthKey) ?? new Map<string, number>();
           const daysInMonth = new Date(year, i + 1, 0).getDate();
@@ -50,9 +52,19 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
             const dayKey = String(d + 1).padStart(2, '0');
             return { day: dayKey, count: dayMap.get(dayKey) ?? 0 };
           }).filter(({ day }) => `${monthKey}-${day}` <= yesterdayKey);
+
+          days.forEach(({ day, count }) => {
+            if (count > maxCount) {
+              maxCount = count;
+              maxDay = `${monthKey}-${day}`;
+            }
+          });
+
           return { month: monthKey, days };
-        }),
-      }));
+        });
+
+        return { year, months, maxDay, maxCount };
+      });
   }, [scans]);
 
   if (!scansByYearMonthAndDay.length) {
@@ -70,6 +82,7 @@ export const Heatmap = ({ scans }: HeatmapProps) => {
                   <HeatmapBox
                     key={`${yearGroup.year}-${monthGroup.month}-${day.day}`}
                     numScans={day.count}
+                    maxScans={yearGroup.maxCount}
                   />
                 );
               })}
