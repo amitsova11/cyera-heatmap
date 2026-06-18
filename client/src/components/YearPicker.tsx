@@ -16,7 +16,7 @@ export const YearPicker = ({
   return (
     <div className="year-picker">
       <IconButton onClick={() => onChange?.(value - 1)}>
-        <ArrowBack className="year-picker-icon" fontSize={'small'} color="primary" />
+        <ArrowBack className="year-picker-icon" fontSize={'small'} />
       </IconButton>
       <div> {value} </div>
       <IconButton

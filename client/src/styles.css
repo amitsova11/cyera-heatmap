@@ -17,6 +17,8 @@ body.light-mode {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .app.light-mode {
@@ -48,6 +50,8 @@ body.light-mode {
   justify-content: flex-start;
   gap: 14px;
   align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .year-picker {
@@ -129,9 +133,12 @@ body.light-mode {
 .heatmap-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   height: 100%;
   width: 800px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  box-sizing: border-box;
 }
 
 .heatmap-grid {
@@ -139,6 +146,7 @@ body.light-mode {
   flex-direction: column;
   gap: 2px;
   align-items: flex-start;
+  min-width: max-content;
 }
 
 .heatmap-month-row {
